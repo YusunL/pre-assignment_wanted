@@ -10,7 +10,9 @@
 
         <div class="flex flex-wrap -mx-40 mb-10">
             {%for post in posts%}
-                <h2> {{post.title}} / {{post.user}} / {{post.created}} </h2>
+                <a href="{% url 'posts:read' post.id %}">
+                    <h2> {{post.title}} / {{post.user}} / {{post.created}} </h2>
+                </a>
             {%endfor%}
         </div>
         <div class="flex items-center justify-center mx-auto container">

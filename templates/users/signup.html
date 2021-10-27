@@ -9,15 +9,15 @@
 
 {% block content %}
 
-    <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+    <div >
 
        
-        <form method="POST" class="w-full" enctype="multipart/form-data">
+        <form method="POST"  enctype="multipart/form-data">
             {% csrf_token %}
     
             {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
-                    <span class="text-red-700 font-medium text-sm">{{error}}</span> 
+                    <span >{{error}}</span> 
                 {% endfor %}
             {% endif %}
     
@@ -25,13 +25,13 @@
                 {% include 'form_input.html' with field=field %}
             {% endfor %}
     
-            <button class="btn bg-red-500 text-white">{{cta}}</button>
+            <button>confirm{{cta}}</button>
         </form>
 
-        <div class="mt-5">
-                <span class="mr-2">Have an account?</span>
-                <a href="{% url 'users:login' %}" class="text-teal-500 font-medium">Log in</a>
-            </div>
+        <div>
+            <span >Have an account?</span>
+            <a href="{% url 'users:login' %}" >Log in</a>
+        </div>
 
     </div>
 {% endblock content %}

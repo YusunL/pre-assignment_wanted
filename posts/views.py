@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, UpdateView
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -21,6 +21,14 @@ class HomeView(ListView):
     context_object_name = "posts"
 
 
+def read_post(request, id):
+    try:
+        post = models.Post.objects.get(id=id)
+        return render(request, "posts/post_read.html", {"post": post})
+    except models.Post.DoesNotExist:
+        return redirect(reverse("core:home"))
+
+
 class WritePostView(user_mixins.LoggedInOnlyView, FormView):
 
     form_class = forms.WritePostForm
@@ -35,9 +43,32 @@ class WritePostView(user_mixins.LoggedInOnlyView, FormView):
         return redirect(reverse("core:home"))
 
 
-def ReadPostView(request, id):
+class EditPostView(user_mixins.LoggedInOnlyView, UpdateView):
+
+    model = models.Post
+    template_name = "posts/post_edit.html"
+    fields = (
+        "title",
+        "content",
+    )
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset=queryset)
+        if post.user.id != self.request.user.id:
+            raise Http404()
+        return post
+
+
+@login_required
+def delete_post(request, post_id):
+    user = request.user
     try:
-        post = models.Post.objects.get(id=id)
-        return render(request, "posts/post_read.html", {"post": post})
+        post = models.Post.objects.get(id=post_id)
+        if post.user.id != user.id:
+            messages.error(request, "Can't delete")
+        else:
+            models.Post.objects.filter(id=post_id).delete()
+            messages.success(request, "Post Deleted")
+        return redirect(reverse("core:home"))
     except models.Post.DoesNotExist:
         return redirect(reverse("core:home"))

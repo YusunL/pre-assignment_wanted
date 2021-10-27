@@ -1,10 +1,11 @@
 {% load i18n %}
-<ul class="flex items-center text-sm font-medium h-full">
+<ul>
+    <a href="{% url 'core:home' %}">{% trans "Home" %}</a>
     {% if user.is_authenticated %}
-        <li class="nav_link"><a href="{% url 'posts:write' %}">{% trans "Write Post" %}</a></li> 
-        <li class="nav_link"><a href="{% url "users:logout" %}">{% trans "Log out" %}</a></li>
+        <li><a href="{% url 'posts:write' %}">{% trans "Write Post" %}</a></li> 
+        <li><a href="{% url "users:logout" %}">{% trans "Log out" %}</a></li>
     {% else %}
-        <li class="nav_link"><a href="{% url "users:login" %}">{% trans "Log in" %}</a></li>
-        <li class="nav_link"><a href="{% url "users:signup" %}">{% trans "Sign up" %}</a></li>
+        <li><a href="{% url "users:login" %}">{% trans "Log in" %}</a></li>
+        <li><a href="{% url "users:signup" %}">{% trans "Sign up" %}</a></li>
     {% endif %}
 </ul>

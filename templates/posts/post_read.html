@@ -9,5 +9,9 @@
         <h1>{{post.title}}</h1>
         <h3>{{post.user}}</h3>
     </div>
-    <span >{{post.content}}</span>
+    <div >{{post.content}}</div>
+
+    <a href="{% url 'posts:edit' post.id %}">Edit</a>
+    <a href="{% url 'posts:delete' post.id %}">Delete</a>
+
 {% endblock %}
